@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff0f5">
+  <title>Pink Calculator ♡</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fff5f8, #ffe4ef, #f8eaff);
+      color: #81556b;
+    }
+
+    .calculator {
+      width: 100%;
+      max-width: 390px;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid #f7d3e3;
+      border-radius: 30px;
+      box-shadow: 0 18px 55px #d997b733;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #d780a7;
+      font-size: 25px;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: #c59aaf;
+      font-size: 13px;
+    }
+
+    .screen {
+      padding: 18px 14px;
+      min-height: 112px;
+      margin-bottom: 18px;
+      background: #fff4f8;
+      border: 1px solid #f9dce8;
+      border-radius: 20px;
+      text-align: right;
+      overflow: hidden;
+    }
+
+    #expression {
+      min-height: 20px;
+      color: #c49aaf;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    #display {
+      width: 100%;
+      margin-top: 10px;
+      padding: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #80536b;
+      text-align: right;
+      font-size: 34px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    button {
+      min-width: 0;
+      min-height: 58px;
+      border: 1px solid #f5d6e4;
+      border-radius: 17px;
+      background: #fff1f7;
+      color: #a76585;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 3px 7px #e7b5ca22;
+      transition: transform 0.15s, background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active {
+      transform: scale(0.94);
+      background: #f7d9e8;
+    }
+
+    .operator {
+      background: #f9deeb;
+      color: #bb7095;
+    }
+
+    .clear {
+      background: #f5c4da;
+      color: #994c73;
+    }
+
+    .equals {
+      background: linear-gradient(135deg, #eaa6c7, #d986b2);
+      color: white;
+      border: none;
+      font-size: 25px;
+      box-shadow: 0 5px 12px #d986b244;
+    }
+
+    .wide {
+      grid-column: span 2;
+    }
+
+    .section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #f4dbe6;
+    }
+
+    .section h2 {
+      margin: 0 0 9px;
+      color: #d17da5;
+      font-size: 18px;
+    }
+
+    .section p {
+      margin: 0 0 13px;
+      color: #ae8b9d;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    #codeInput {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #f0cadb;
+      border-radius: 13px;
+      background: #fff8fb;
+      color: #80536b;
+      font-size: 16px;
+      outline-color: #e7a0c2;
+    }
+
+    #runButton {
+      width: 100%;
+      margin-top: 10px;
+      background: #e7a0c1;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    #programResult {
+      margin-top: 13px;
+      color: #b46189;
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #d1a8bc;
+      font-size: 12px;
+    }
+
+    @media (max-width: 360px) {
+      .calculator {
+        padding: 16px;
+      }
+
+      .buttons {
+        gap: 7px;
+      }
+
+      button {
+        min-height: 53px;
+        border-radius: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="calculator">
+
+    <header class="header">
+      <h1>♡ Pink Calculator</h1>
+      <p>Your little math assistant ✧</p>
+    </header>
+
+    <section class="screen">
+      <div id="expression">Let's calculate something!</div>
+      <input
+        id="display"
+        type="text"
+        inputmode="decimal"
+        value="0"
+        aria-label="Математическое выражение"
+        autocomplete="off"
+      >
+    </section>
+
+    <div class="buttons">
+      <button class="clear" onclick="clearAll()">AC</button>
+      <button class="operator" onclick="add('(')">(</button>
+      <button class="operator" onclick="add(')')">)</button>
+      <button class="operator" onclick="add('/')">÷</button>
+
+      <button onclick="add('7')">7</button>
+      <button onclick="add('8')">8</button>
+      <button onclick="add('9')">9</button>
+      <button class="operator" onclick="add('*')">×</button>
+
+      <button onclick="add('4')">4</button>
+      <button onclick="add('5')">5</button>
+      <button onclick="add('6')">6</button>
+      <button class="operator" onclick="add('-')">−</button>
+
+      <button onclick="add('1')">1</button>
+      <button onclick="add('2')">2</button>
+      <button onclick="add('3')">3</button>
+      <button class="operator" onclick="add('+')">+</button>
+
+      <button onclick="add('0')">0</button>
+      <button onclick="add('.')">.</button>
+      <button onclick="backspace()">⌫</button>
+      <button class="equals" onclick="calculate()">=</button>
+
+      <button class="operator wide" onclick="add('%')">%</button>
+      <button class="operator wide" onclick="add('**')">xʸ</button>
+    </div>
+
+    <section class="section">
+      <h2>⌘ Math Lab</h2>
+      <p>
+        Вводи собственные математические выражения.
+        Например: (12 + 8) * 3 или 2 ** 8.
+        Поддерживаются скобки, степени и арифметические действия.
+      </p>
+
+      <input
+        id="codeInput"
+        type="text"
+        placeholder="Например: (12 + 8) * 3"
+        autocomplete="off"
+      >
+
+      <button id="runButton" onclick="runProgram()">
+        ▶ Calculate
+      </button>
+
+      <div id="programResult" aria-live="polite"></div>
+    </section>
+
+    <footer class="footer">
+      Made with ♡ and a little bit of math
+    </footer>
+
+  </main>
+
+  <script>
+    const display = document.getElementById("display");
+    const expression = document.getElementById("expression");
+
+    function add(value) {
+      if (display.value === "0" || display.value === "Ошибка") {
+        display.value = "";
+      }
+
+      display.value += value;
+      expression.textContent = "Calculating...";
+      display.focus();
+    }
+
+    function clearAll() {
+      display.value = "0";
+      expression.textContent = "Let's calculate something!";
+      document.getElementById("programResult").textContent = "";
+    }
+
+    function backspace() {
+      display.value = display.value.slice(0, -1) || "0";
+    }
+
+    // Безопасный математический анализатор.
+    // Не выполняет произвольный JavaScript.
+    function evaluateMath(source) {
+      source = source.replace(/×/g, "*")
+                     .replace(/÷/g, "/")
+                     .replace(/,/g, ".")
+                     .replace(/\s/g, "");
+
+      if (!source || source.length > 200) {
+        throw new Error("Введите выражение");
+      }
+
+      const tokens = source.match(
+        /\d+(?:\.\d+)?|\*\*|[()+\-*/%]/g
+      );
+
+      if (!tokens || tokens.join("") !== source) {
+        throw new Error("Проверьте выражение");
+      }
+
+      let pos = 0;
+
+      function factor() {
+        let sign = 1;
+
+        while (tokens[pos] === "+" || tokens[pos] === "-") {
+          if (tokens[pos] === "-") sign *= -1;
+          pos++;
+        }
+
+        let value;
+
+        if (tokens[pos] === "(") {
+          pos++;
+          value = sum();
+
+          if (tokens[pos] !== ")") {
+            throw new Error("Проверьте скобки");
+          }
+
+          pos++;
+        } else {
+          const token = tokens[pos++];
+
+          if (!token || !/^\d+(?:\.\d+)?$/.test(token)) {
+            throw new Error("Ожидалось число");
+          }
+
+          value = Number(token);
+        }
+
+        value *= sign;
+
+        if (tokens[pos] === "**") {
+          pos++;
+          value = value ** factor();
+        }
+
+        return value;
+      }
+
+      function term() {
+        let value = factor();
+
+        while (["*", "/", "%"].includes(tokens[pos])) {
+          const op = tokens[pos++];
+          const right = factor();
+
+          if (op === "*") value *= right;
+          if (op === "/") value /= right;
+          if (op === "%") value %= right;
+        }
+
+        return value;
+      }
+
+      function sum() {
+        let value = term();
+
+        while (tokens[pos] === "+" || tokens[pos] === "-") {
+          const op = tokens[pos++];
+          const right = term();
+
+          value = op === "+" ? value + right : value - right;
+        }
+
+        return value;
+      }
+
+      const result = sum();
+
+      if (pos !== tokens.length || !Number.isFinite(result)) {
+        throw new Error("Невозможно вычислить результат");
+      }
+
+      if (Math.abs(result) > 1e100) {
+        throw new Error("Число слишком большое");
+      }
+
+      return Number(result.toPrecision(12));
+    }
+
+    function calculate() {
+      const source = display.value;
+
+      try {
+        const result = evaluateMath(source);
+        expression.textContent = source + " =";
+        display.value = String(result);
+      } catch (error) {
+        expression.textContent = error.message;
+      }
+    }
+
+    function runProgram() {
+      const source = document.getElementById("codeInput").value;
+      const output = document.getElementById("programResult");
+
+      try {
+        const result = evaluateMath(source);
+        output.textContent = "♡ Result: " + result;
+      } catch (error) {
+        output.textContent = "♡ " + error.message;
+      }
+    }
+
+    display.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") calculate();
+    });
+
+    document.getElementById("codeInput")
+      .addEventListener("keydown", function(event) {
+        if (event.key === "Enter") runProgram();
+      });
+  </script>
+
+</body>
+</html>
